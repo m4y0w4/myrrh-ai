@@ -1,6 +1,6 @@
 # **Myrrh AI — AdonisJS Agent Harness**
 
-> Teaching your AI agent to write clean, idiomatic AdonisJS v7. Token-optimized agent skills and guardrails designed for **OpenCode**, **Claude Code**, and autonomous AI coding assistants.
+> Teaching your AI agent to write clean, idiomatic AdonisJS v7. Token-optimized agent skills and guardrails designed for **Claude Code**, **Copilot**, **Opencode**, and autonomous AI coding assistants.
 
 ## **🧭 Live Web Workbench**
 
