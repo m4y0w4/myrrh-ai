@@ -22,8 +22,6 @@ Myrrh AI splits the AdonisJS v7 knowledge base into **modular, on-demand skill u
 
 ## **📂 Repository Structure**
 
-![myrrh-ai-folders.png](https://www.github.com/m4y0w4/myrrh-ai/myrrh-ai-folders.png)
-
 ![Myrrh AI Architecture](./myrrh-ai-folders.png)
 
 ## **⚡ Quick Start**
