@@ -6,7 +6,7 @@
 
 An interactive visual builder and single-click bundle generator is available directly in this repository:
 
-👉 [**Open the Myrrh AI Interactive Harness Guide**](https://github.com)
+👉 [**Open the Myrrh AI Interactive Harness Guide**](https://m4y0w4.github.io/myrrh-ai/)]
 
 ## **🧠 Why This Architecture? (The Just-In-Time Context Strategy)**
 
