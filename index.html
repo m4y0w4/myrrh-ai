@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myrrh AI — AdonisJS v7 Agent Harness Builder</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter and JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Tailwind Configuration with True Polar Opposites: Pure Pitch Black vs. Crisp Pure Light with Befitting Golden Yellow -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            // Neutralized slate: zero blue/navy undertones, pure optical grays
+            slate: {
+              50: '#fafafa',
+              100: '#f5f5f5',
+              200: '#e5e5e5',
+              300: '#d4d4d4',
+              400: '#a3a3a3',
+              500: '#737373',
+              600: '#525252',
+              700: '#404040',
+              800: '#262626',
+              900: '#171717',
+              950: '#0a0a0a',
+            },
+            // True OLED pitch blacks with zero cool/blue shift
+            obsidian: {
+              DEFAULT: '#000000',
+              50: '#fafafa',
+              100: '#f5f5f5',
+              200: '#e5e5e5',
+              300: '#d4d4d4',
+              400: '#a3a3a3',
+              500: '#737373',
+              600: '#525252',
+              700: '#333333',
+              800: '#212121',
+              850: '#141414',
+              900: '#0a0a0a',
+              950: '#000000',
+            },
+            solar: {
+              DEFAULT: '#FACC15', /* Befitting Luminous Yellow / Golden Amber */
+              50: '#FEFCE8',
+              100: '#FEF9C3',
+              200: '#FEF08A',
+              300: '#FDE047',
+              400: '#FACC15',
+              500: '#EAB308',
+              600: '#CA8A04',
+              700: '#A16207',
+              800: '#854D0E',
+              900: '#713F12',
+              950: '#422006',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom subtle adaptive scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f5f5f5;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #212121;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d4d4d4;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: #333333;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a3a3a3;
+    }
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+<body class="bg-[#f8fafc] dark:bg-obsidian-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans selection:bg-solar selection:text-black dark:selection:bg-solar dark:selection:text-black transition-colors duration-200">
+
+  <header class="border-b border-slate-200 dark:border-obsidian-850 bg-white/95 dark:bg-obsidian-900/90 backdrop-blur sticky top-0 z-30 px-4 lg:px-8 py-3 flex items-center justify-between transition-colors shadow-sm dark:shadow-none">
+    <div class="flex items-center space-x-3">
+      <!-- Myrrh Badge: Pitch Black & Luminous Gold -->
+      <div class="w-9 h-9 rounded-xl bg-black dark:bg-obsidian-900 flex items-center justify-center shadow-md shadow-black/10 dark:shadow-solar/10 flex-shrink-0 text-solar font-bold text-sm tracking-wider border border-solar/60 dark:border-solar/40">
+        <span>M</span>
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 class="font-bold text-sm sm:text-base tracking-tight text-black dark:text-white">Myrrh AI</h1>
+          <span class="px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded-full bg-solar-100 text-solar-900 dark:bg-solar/10 dark:text-solar border border-solar-300 dark:border-solar/30 hidden xs:inline-block">AdonisJS v7 Compliant</span>
+        </div>
+        <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400">Teaching your AI agent to write clean, idiomatic AdonisJS v7.</p>
+      </div>
+    </div>
+
+    <!-- Header Actions with Star button & Polar Theme Toggle -->
+    <div class="flex items-center space-x-2 sm:space-x-2.5">
+      <!-- Star on GitHub Button -->
+      <a 
+        id="github-star-link" 
+        href="https://github.com" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        title="Star on GitHub"
+        class="px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 dark:border-obsidian-800 bg-white hover:bg-solar-50 dark:bg-obsidian-900 dark:hover:bg-obsidian-850 text-slate-800 dark:text-slate-200 text-xs font-medium flex items-center space-x-1.5 transition-all active:scale-95 shadow-sm group"
+      >
+        <svg class="w-3.5 h-3.5 text-solar-600 fill-solar dark:text-solar dark:fill-solar group-hover:scale-110 transition-transform" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+        </svg>
+        <span class="hidden sm:inline">Star on GitHub</span>
+        <span class="sm:hidden">Star</span>
+      </a>
+
+      <!-- Theme Switcher Button -->
+      <button 
+        id="btn-theme-toggle" 
+        type="button" 
+        aria-label="Toggle Theme"
+        class="px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 dark:border-obsidian-800 bg-white hover:bg-slate-100 dark:bg-obsidian-900 dark:hover:bg-obsidian-850 text-slate-800 dark:text-slate-200 text-xs font-medium flex items-center space-x-2 transition-all active:scale-95 shadow-sm"
+      >
+        <svg id="icon-sun" class="w-4 h-4 text-solar-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg id="icon-moon" class="w-4 h-4 text-slate-800 dark:text-solar" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+        <span id="theme-label" class="hidden md:inline font-mono text-[11px]">Pitch Black</span>
+      </button>
+
+      <!-- Download Button: Jet Black with Golden Yellow Accents -->
+      <button id="btn-download-bundle" class="px-3 sm:px-3.5 py-1.5 rounded-lg bg-black hover:bg-neutral-900 text-solar font-medium text-xs shadow-md shadow-black/20 flex items-center space-x-1.5 transition-all active:scale-95 border border-solar/50">
+        <svg class="w-4 h-4 text-solar" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span class="hidden sm:inline">Download All (.sh Bundle)</span>
+        <span class="sm:hidden">Get .sh</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+    <!-- Sidebar: Skill Selector & Search -->
+    <aside class="lg:col-span-4 flex flex-col space-y-4 h-full">
+      <!-- Search Box -->
+      <div class="relative flex-shrink-0">
+        <input 
+          type="text" 
+          id="skill-search" 
+          placeholder="Filter skills (e.g., lucid, auth, vine)..."
+          class="w-full bg-white dark:bg-obsidian-900 border border-slate-300 dark:border-obsidian-800 rounded-xl px-3.5 py-2.5 pl-9 text-xs focus:outline-none focus:border-black dark:focus:border-solar focus:ring-1 focus:ring-black dark:focus:ring-solar transition text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 shadow-sm"
+        />
+        <svg class="w-4 h-4 absolute left-3 top-3 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <!-- Skills List Card -->
+      <div class="bg-white dark:bg-obsidian-900 border border-slate-200 dark:border-obsidian-850 rounded-2xl overflow-hidden shadow-sm dark:shadow-2xl flex-1 flex flex-col min-h-0 transition-colors">
+        <div class="px-4 py-3 border-b border-slate-200 dark:border-obsidian-850 flex items-center justify-between bg-slate-50/70 dark:bg-obsidian-950/60 flex-shrink-0">
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Myrrh AI Skills</span>
+          <span id="skill-count" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-obsidian-800 text-slate-800 dark:text-slate-300 font-mono">7 Skills</span>
+        </div>
+        <div id="skills-list" class="divide-y divide-slate-100 dark:divide-obsidian-850/60 overflow-y-auto flex-1 min-h-[220px] p-1.5 space-y-1">
+          <!-- Populated dynamically from template tags -->
+        </div>
+      </div>
+
+      <!-- Strategy Info Box -->
+      <div class="bg-gradient-to-br from-solar-50 via-white to-solar-100/50 dark:from-obsidian-900 dark:to-obsidian-950 border border-solar-200 dark:border-solar/20 rounded-2xl p-4 text-xs space-y-2 shadow-sm transition-colors flex-shrink-0">
+        <div class="flex items-center space-x-2 text-black dark:text-solar font-semibold">
+          <svg class="w-4 h-4 text-solar-600 dark:text-solar" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Why Not Monolithic Repo Dumps / Full Docs?</span>
+        </div>
+        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+          Massive context bundles dump 200,000+ bloated tokens into memory, causing model hallucination and soaring API costs. Instead, these modular, bite-sized framework skills are loaded <strong class="text-black dark:text-slate-200">Just-In-Time</strong> by OpenCode—preserving premium context space while strictly enforcing v7 negative guardrails.
+        </p>
+      </div>
+    </aside>
+
+    <section class="lg:col-span-8 flex flex-col h-full min-h-[500px]">
+      <!-- Active Skill Card -->
+      <div class="bg-white dark:bg-obsidian-900 border border-slate-200 dark:border-obsidian-850 rounded-2xl shadow-sm dark:shadow-2xl flex flex-col flex-1 h-full min-h-0 overflow-hidden transition-colors">
+        
+        <!-- Header Info Bar -->
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-obsidian-850 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70 dark:bg-obsidian-950/60 flex-shrink-0">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span id="display-badge" class="px-2 py-0.5 text-[10px] font-bold uppercase rounded-md bg-solar-100 text-solar-900 dark:bg-solar/15 dark:text-solar border border-solar-300 dark:border-solar/40">MYRRH: ANCHOR</span>
+              <h2 id="display-title" class="text-sm sm:text-base font-bold text-black dark:text-white">AGENTS.md (Root Project Anchor)</h2>
+            </div>
+            <p id="display-path" class="text-xs text-slate-500 dark:text-slate-400 font-mono mt-1">AGENTS.md</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-2">
+            <button id="btn-copy" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-obsidian-800 dark:hover:bg-obsidian-850 text-slate-700 dark:text-slate-200 text-xs font-medium border border-slate-300 dark:border-obsidian-700/60 flex items-center space-x-1.5 transition active:scale-95 shadow-sm">
+              <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span>Copy</span>
+            </button>
+            <button id="btn-download-single" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-obsidian-800 dark:hover:bg-obsidian-850 text-slate-700 dark:text-slate-200 text-xs font-medium border border-slate-300 dark:border-obsidian-700/60 flex items-center space-x-1.5 transition active:scale-95 shadow-sm">
+              <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Download</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Description Banner -->
+        <div id="display-desc-container" class="px-5 py-2.5 bg-slate-50/90 dark:bg-obsidian-900/60 border-b border-slate-200 dark:border-obsidian-850 text-xs text-slate-600 dark:text-slate-400 flex-shrink-0">
+          <span id="display-desc">Project-wide invariant execution guardrails, dynamic imports, and planning protocols.</span>
+        </div>
+
+        <!-- Code Content Area: Pure Clean Slate in Light vs True Obsidian Pitch Black in Dark -->
+        <div class="relative flex-1 min-h-0 bg-white dark:bg-obsidian-950 p-4 sm:p-5 overflow-auto border-t border-slate-200 dark:border-transparent flex flex-col">
+          <pre class="flex-1"><code id="code-content" class="code-font text-xs leading-relaxed text-slate-900 dark:text-slate-200 block whitespace-pre min-h-full"></code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Legal & Fair Use Footer -->
+  <footer class="mt-auto py-3 px-4 border-t border-slate-200 dark:border-obsidian-850 bg-white/80 dark:bg-obsidian-900/70 backdrop-blur text-[11px] text-slate-500 dark:text-slate-400 transition-colors">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 px-2">
+      <p>Myrrh AI is an independent community open-source project. Not affiliated with, endorsed by, or sponsored by the AdonisJS&trade; core team or AdonisJS Plus.</p>
+      <p class="font-medium text-slate-700 dark:text-slate-300">Always audit and test all AI-generated code prior to production use.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-16 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-black text-solar dark:bg-obsidian-900 dark:text-solar px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium flex items-center space-x-2 border border-solar/40">
+      <svg class="w-4 h-4 text-solar" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <span id="toast-message">Copied to clipboard!</span>
+    </div>
+  </div>
+
+
+  <template id="tpl-agents-global"
+    data-title="AGENTS.md (Root Project Anchor)"
+    data-badge="MYRRH: ANCHOR"
+    data-path="AGENTS.md"
+    data-desc="Project-wide invariant execution guardrails, dynamic imports, subpath aliases, and planning protocols for Myrrh AI.">
+# Project Conventions: AdonisJS v7 (Bun Runtime) — Managed by Myrrh AI
+
+## Execution Protocol (Plan First)
+Before modifying or creating any files:
+1. Formulate a brief implementation spec naming the exact files to create or modify.
+2. Verify all subpath import targets exist or need scaffolding.
+3. Enforce AdonisJS v7 standards (barrel imports, urlFor, transformers).
+4. Request confirmation before applying multi-file changes.
+
+## Invariant Coding Standards
+- **Runtime:** Always use Bun (`bun run ace ...`).
+- **Subpath Imports:** Exclusively use Node/Bun subpath imports defined in `package.json`:
+  - `#controllers/*` (or `#generated/controllers`)
+  - `#models/*`
+  - `#validators/*`
+  - `#transformers/*`
+  - `#services/*`
+  - `#middleware/*`
+  - ❌ NEVER use relative imports (e.g., `../../models/user`).
+- **Request Validation:** Never call `request.all()`. Always validate using `await request.validateUsing(validator)`.
+- **Serialization:** Models returned to APIs or Inertia views must pass through an explicit Transformer.
+</template>
+
+  <template id="tpl-skill-lucid"
+    data-title="myrrh-lucid (Active Record & Migrations)"
+    data-badge="MYRRH: LUCID"
+    data-path=".opencode/skills/myrrh-lucid/SKILL.md"
+    data-desc="Lucid ORM rules, column decorators, TypeScript declare syntax, relationship typing, and migrations.">
+---
+name: myrrh-lucid
+description: Comprehensive rules, decorators, and query patterns for Lucid ORM v21+ in AdonisJS v7. Use whenever modifying database models, migrations, seeders, or running queries.
+---
+
+# Lucid ORM Guardrails (Myrrh AI)
+
+## Recommended Defaults
+- Declare column properties explicitly using TypeScript `declare`:
+```typescript
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { DateTime } from 'luxon'
+import Post from '#models/post'
+
+export default class User extends BaseModel {
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare email: string
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @hasMany(() => Post)
+  declare posts: HasMany<typeof Post>
+}
+```
+- Eager load relationships using lambda queries:
+```typescript
+await user.load('posts', (query) => {
+  query.where('published', true)
+})
+```
+- Wrap multi-table updates inside transactions:
+```typescript
+import db from '@adonisjs/lucid/services/db'
+
+await db.transaction(async (trx) => {
+  const user = await User.create(userData, { client: trx })
+  await user.related('posts').create(postData, { client: trx })
+})
+```
+
+## Avoid by Default
+- ❌ Do NOT initialize model columns with assignment defaults (`declare id: number = 1`). Always use `declare`.
+- ❌ Do NOT forget `await` on queries (`User.find(1)` returns a Promise).
+- ❌ Do NOT run raw SQL queries without parameter bindings.
+</template>
+
+  <template id="tpl-skill-vinejs"
+    data-title="myrrh-vinejs (Input Validation & DTOs)"
+    data-badge="MYRRH: VINEJS"
+    data-path=".opencode/skills/myrrh-vinejs/SKILL.md"
+    data-desc="Pre-compiled schema validation, DTO type inference, and controller request validation.">
+---
+name: myrrh-vinejs
+description: Form validation schemas and type generation using VineJS in AdonisJS v7. Use whenever creating or updating user input validation schemas or DTOs.
+---
+
+# VineJS Validation Guardrails (Myrrh AI)
+
+## Recommended Defaults
+- Define validators in `#validators/*`.
+- Compile schemas at module scope before exporting:
+```typescript
+import vine from '@vinejs/vine'
+import type { Infer } from '@vinejs/vine/types'
+
+export const createUserValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim().minLength(2),
+    email: vine.string().email().normalizeEmail(),
+    password: vine.string().minLength(8),
+  })
+)
+
+export type CreateUserDTO = Infer<typeof createUserValidator>
+```
+- Validate inputs inside controllers with `request.validateUsing()`:
+```typescript
+const payload = await request.validateUsing(createUserValidator)
+```
+
+## Avoid by Default
+- ❌ Do NOT compile schemas inside controller actions (compile once at module scope).
+- ❌ Do NOT use Zod, Joi, or class-validator.
+- ❌ Do NOT access raw unvalidated inputs using `request.all()`.
+</template>
+
+  <template id="tpl-skill-http"
+    data-title="myrrh-http (Routing & Controllers v7)"
+    data-badge="MYRRH: HTTP"
+    data-path=".opencode/skills/myrrh-http/SKILL.md"
+    data-desc="AdonisJS v7 routing with barrel controllers, urlFor URL generator, and HttpContext.">
+---
+name: myrrh-http
+description: Route handling, controllers, HTTP context, and status responses for AdonisJS v7. Use when creating API endpoints, routes, or controllers.
+---
+
+# AdonisJS v7 HTTP Routing & Controllers (Myrrh AI)
+
+## Recommended Defaults
+- In AdonisJS v7, route definitions use the generated controller barrel:
+```typescript
+import router from '@adonisjs/core/services/router'
+import { controllers } from '#generated/controllers'
+
+router.group(() => {
+  router.get('/posts', [controllers.Posts, 'index']).as('posts.index')
+  router.post('/posts', [controllers.Posts, 'store']).as('posts.store')
+  router.get('/posts/:id', [controllers.Posts, 'show']).as('posts.show')
+}).prefix('/api/v1')
+```
+- Generate type-safe URLs using `urlFor()`:
+```typescript
+import { urlFor } from '@adonisjs/core/services/router'
+
+const postUrl = urlFor('posts.show', { params: { id: post.id } })
+```
+- Controllers receive `HttpContext` as the first argument:
+```typescript
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class PostsController {
+  async index({ response }: HttpContext) {
+    return response.ok({ data: [] })
+  }
+}
+```
+
+## Avoid by Default
+- ❌ Do NOT use manual dynamic imports (`const PostsController = () => import(...)`) in v7 routes. Use `#generated/controllers`.
+- ❌ Do NOT use deprecated `router.makeUrl()` or Edge `route()` helpers. Use `urlFor()`.
+- ❌ Do NOT use Express syntax (`req`, `res`, `next`).
+</template>
+
+  <template id="tpl-skill-transformers"
+    data-title="myrrh-transformers (Serialization Layer)"
+    data-badge="MYRRH: TRANSFORM"
+    data-path=".opencode/skills/myrrh-transformers/SKILL.md"
+    data-desc="AdonisJS v7 official serialization layer for API responses, Tuyau RPC, and Inertia props.">
+---
+name: myrrh-transformers
+description: Model serialization and API resource transformation in AdonisJS v7. Use whenever returning database models to API clients or Inertia views.
+---
+
+# AdonisJS v7 Transformers Guardrails (Myrrh AI)
+
+## Recommended Defaults
+- Always transform Lucid models before returning them from controllers:
+```typescript
+// app/transformers/user_transformer.ts
+import { BaseTransformer } from '@adonisjs/core/transformers'
+import User from '#models/user'
+
+export default class UserTransformer extends BaseTransformer<User> {
+  toObject(user: User) {
+    return {
+      id: user.id,
+      email: user.email,
+      fullName: user.fullName,
+      createdAt: user.createdAt.toISO(),
+    }
+  }
+}
+```
+- Using in controllers:
+```typescript
+import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
+import UserTransformer from '#transformers/user_transformer'
+
+export default class UsersController {
+  async show({ params, response }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    return response.ok(UserTransformer.transform(user))
+  }
+}
+```
+
+## Avoid by Default
+- ❌ Do NOT return raw Lucid model instances directly from controllers.
+- ❌ Do NOT expose password hashes or sensitive internal flags in responses.
+</template>
+
+  <template id="tpl-skill-auth"
+    data-title="myrrh-auth (Authentication & Tokens)"
+    data-badge="MYRRH: AUTH"
+    data-path=".opencode/skills/myrrh-auth/SKILL.md"
+    data-desc="Authentication flows using @adonisjs/auth, access tokens, session guards, and credential verification.">
+---
+name: myrrh-auth
+description: Session and Access Token authentication using @adonisjs/auth in AdonisJS v7. Use when implementing user registration, logins, token generation, or authentication guards.
+---
+
+# AdonisJS v7 Authentication Guardrails (Myrrh AI)
+
+## Recommended Defaults
+- Verify user credentials using `User.verifyCredentials()`:
+```typescript
+import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
+import UserTransformer from '#transformers/user_transformer'
+
+export default class AuthController {
+  async login({ request, response }: HttpContext) {
+    const { email, password } = request.only(['email', 'password'])
+
+    const user = await User.verifyCredentials(email, password)
+
+    const token = await User.accessTokens.create(user, ['*'], {
+      expiresIn: '30 days',
+    })
+
+    return response.ok({
+      type: 'bearer',
+      token: token.value!.release(),
+      user: UserTransformer.transform(user),
+    })
+  }
+
+  async me({ auth, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    return response.ok(UserTransformer.transform(user))
+  }
+}
+```
+- Protect routes in `start/routes.ts` with `middleware.auth()`:
+```typescript
+import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
+import { controllers } from '#generated/controllers'
+
+router.get('/dashboard', [controllers.Dashboard, 'index']).use(middleware.auth())
+```
+
+## Avoid by Default
+- ❌ Do NOT manually compare passwords using `bcrypt.compare()`. Use `User.verifyCredentials()`.
+- ❌ Do NOT create custom JWT signers unless strictly required. Use official Access Tokens or Session guards.
+</template>
+
+  <template id="tpl-skill-bouncer"
+    data-title="myrrh-bouncer (Authorization & Policies)"
+    data-badge="MYRRH: BOUNCER"
+    data-path=".opencode/skills/myrrh-bouncer/SKILL.md"
+    data-desc="Resource authorization policies, pre-validation checks, and permission gating.">
+---
+name: myrrh-bouncer
+description: Fine-grained authorization, pre-validation checks, and policies using @adonisjs/bouncer in AdonisJS v7. Use whenever enforcing user roles, resource ownership, or permissions.
+---
+
+# AdonisJS v7 Bouncer Authorization Guardrails (Myrrh AI)
+
+## Recommended Defaults
+- Define policies inside `app/policies/*`:
+```typescript
+import User from '#models/user'
+import Post from '#models/post'
+import { BasePolicy } from '@adonisjs/bouncer'
+
+export default class PostPolicy extends BasePolicy {
+  view(user: User, post: Post): boolean {
+    return post.isPublished || user.id === post.userId
+  }
+
+  edit(user: User, post: Post): boolean {
+    return user.id === post.userId
+  }
+
+  delete(user: User, post: Post): boolean {
+    return user.id === post.userId || user.isAdmin
+  }
+}
+```
+- Authorize requests before validating payloads:
+```typescript
+import type { HttpContext } from '@adonisjs/core/http'
+import PostPolicy from '#policies/post_policy'
+import Post from '#models/post'
+
+export default class PostsController {
+  async destroy({ bouncer, params, response }: HttpContext) {
+    const post = await Post.findOrFail(params.id)
+
+    // Abort early with 403 Forbidden
+    await bouncer.with(PostPolicy).authorize('delete', post)
+
+    await post.delete()
+    return response.noContent()
+  }
+}
+```
+
+## Avoid by Default
+- ❌ Do NOT validate request bodies before checking authorization. Always authorize first.
+- ❌ Do NOT hardcode role checks (`if (user.role === 'admin')`) inside controller bodies. Use Policies or Abilities.
+</template>
+
+  <script>
+    (function () {
+      // Auto-detect or sync GitHub repo star link from window location if on GitHub Pages
+      const starLink = document.getElementById('github-star-link');
+      if (starLink) {
+        if (window.location.hostname.endsWith('github.io')) {
+          const pathSegments = window.location.pathname.split('/').filter(Boolean);
+          const user = window.location.hostname.split('.')[0];
+          const repo = pathSegments[0] || '';
+          if (user && repo) {
+            starLink.href = `https://github.com/${user}/${repo}`;
+          }
+        }
+      }
+
+      // Data registry populated from HTML templates
+      const registry = [];
+      let activeIndex = 0;
+      let isDarkMode = true;
+
+      // Extract template data safely
+      const templates = document.querySelectorAll('template[id^="tpl-"]');
+      templates.forEach((tpl) => {
+        const id = tpl.id.replace('tpl-', '');
+        const title = tpl.getAttribute('data-title') || id;
+        const badge = tpl.getAttribute('data-badge') || 'SKILL';
+        const path = tpl.getAttribute('data-path') || '';
+        const desc = tpl.getAttribute('data-desc') || '';
+        const content = tpl.innerHTML.trim();
+
+        registry.push({
+          id,
+          title,
+          badge,
+          path,
+          desc,
+          content
+        });
+      });
+
+      // UI Elements
+      const skillsListEl = document.getElementById('skills-list');
+      const searchInput = document.getElementById('skill-search');
+      const countEl = document.getElementById('skill-count');
+      const titleEl = document.getElementById('display-title');
+      const badgeEl = document.getElementById('display-badge');
+      const pathEl = document.getElementById('display-path');
+      const descEl = document.getElementById('display-desc');
+      const codeEl = document.getElementById('code-content');
+      const btnCopy = document.getElementById('btn-copy');
+      const btnDownloadSingle = document.getElementById('btn-download-single');
+      const btnDownloadBundle = document.getElementById('btn-download-bundle');
+      const btnThemeToggle = document.getElementById('btn-theme-toggle');
+      const iconSun = document.getElementById('icon-sun');
+      const iconMoon = document.getElementById('icon-moon');
+      const themeLabel = document.getElementById('theme-label');
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+
+      // Theme toggle implementation
+      function applyTheme(dark) {
+        isDarkMode = dark;
+        if (dark) {
+          document.documentElement.classList.add('dark');
+          if (iconSun) iconSun.classList.remove('hidden');
+          if (iconMoon) iconMoon.classList.add('hidden');
+          if (themeLabel) themeLabel.textContent = 'Pitch Black';
+        } else {
+          document.documentElement.classList.remove('dark');
+          if (iconSun) iconSun.classList.add('hidden');
+          if (iconMoon) iconMoon.classList.remove('hidden');
+          if (themeLabel) themeLabel.textContent = 'Pure Light';
+        }
+        renderList(searchInput ? searchInput.value : '');
+      }
+
+      if (btnThemeToggle) {
+        btnThemeToggle.addEventListener('click', () => {
+          applyTheme(!isDarkMode);
+          showToast(`Switched to ${isDarkMode ? 'Pitch Black' : 'Pure Light'}`);
+        });
+      }
+
+      // Toast notification helper
+      function showToast(msg) {
+        if (!toast || !toastMessage) return;
+        toastMessage.textContent = msg;
+        toast.classList.remove('translate-y-16', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-16', 'opacity-0');
+        }, 2200);
+      }
+
+      // Safe download helper using Blob
+      function downloadFile(filename, text) {
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      // Render sidebar list
+      function renderList(filter = '') {
+        if (!skillsListEl) return;
+        skillsListEl.innerHTML = '';
+        const q = filter.toLowerCase().trim();
+
+        let visibleCount = 0;
+
+        registry.forEach((item, idx) => {
+          const match = item.title.toLowerCase().includes(q) ||
+                        item.badge.toLowerCase().includes(q) ||
+                        item.path.toLowerCase().includes(q) ||
+                        item.desc.toLowerCase().includes(q);
+
+          if (!match) return;
+          visibleCount++;
+
+          const isActive = idx === activeIndex;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `w-full text-left p-3 rounded-xl transition flex flex-col space-y-1.5 ${
+            isActive 
+              ? 'bg-solar-50/90 dark:bg-solar/10 border border-solar-400 dark:border-solar/40 text-black dark:text-white shadow-sm' 
+              : 'hover:bg-slate-100 dark:hover:bg-obsidian-850/70 border border-transparent text-slate-700 dark:text-slate-300'
+          }`;
+
+          btn.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded ${
+                isActive ? 'bg-solar-200 dark:bg-solar/20 text-solar-950 dark:text-solar border border-solar-400/80 dark:border-solar/40' : 'bg-slate-100 dark:bg-obsidian-800 text-slate-600 dark:text-slate-400'
+              }">${item.badge}</span>
+              <span class="text-[10px] font-mono text-slate-500 dark:text-slate-500">${item.path.split('/').pop()}</span>
+            </div>
+            <div class="font-semibold text-xs text-black dark:text-slate-100 truncate">${item.title}</div>
+            <div class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-1">${item.desc}</div>
+          `;
+
+          btn.addEventListener('click', () => {
+            activeIndex = idx;
+            renderList(searchInput ? searchInput.value : '');
+            renderPreview();
+          });
+
+          skillsListEl.appendChild(btn);
+        });
+
+        if (countEl) {
+          countEl.textContent = `${visibleCount} Skills`;
+        }
+      }
+
+      // Render active skill preview
+      function renderPreview() {
+        const item = registry[activeIndex];
+        if (!item) return;
+
+        if (titleEl) titleEl.textContent = item.title;
+        if (badgeEl) badgeEl.textContent = item.badge;
+        if (pathEl) pathEl.textContent = item.path;
+        if (descEl) descEl.textContent = item.desc;
+        if (codeEl) codeEl.textContent = item.content;
+      }
+
+      // Copy active skill
+      if (btnCopy) {
+        btnCopy.addEventListener('click', () => {
+          const item = registry[activeIndex];
+          if (!item) return;
+
+          const tempTextArea = document.createElement('textarea');
+          tempTextArea.value = item.content;
+          tempTextArea.style.position = 'fixed';
+          tempTextArea.style.left = '-9999px';
+          document.body.appendChild(tempTextArea);
+          tempTextArea.select();
+
+          try {
+            document.execCommand('copy');
+            showToast('Copied skill content to clipboard!');
+          } catch (err) {
+            showToast('Failed to copy to clipboard.');
+          } finally {
+            document.body.removeChild(tempTextArea);
+          }
+        });
+      }
+
+      // Download single active file
+      if (btnDownloadSingle) {
+        btnDownloadSingle.addEventListener('click', () => {
+          const item = registry[activeIndex];
+          if (!item) return;
+          const filename = item.path.split('/').pop() || 'skill.md';
+          downloadFile(filename, item.content);
+          showToast(`Downloaded ${filename}`);
+        });
+      }
+
+      // Download all bundle bash script
+      if (btnDownloadBundle) {
+        btnDownloadBundle.addEventListener('click', () => {
+          let script = `#!/usr/bin/env bash\n# Myrrh AI — AdonisJS v7 Agent Harness Scaffolder\n# Generated for OpenCode, Claude Code, and Bun\n\nset -e\necho "🚀 Installing Myrrh AI Agent Skills (AdonisJS v7)..."\n\n`;
+
+          registry.forEach((item) => {
+            const dir = item.path.substring(0, item.path.lastIndexOf('/'));
+            if (dir) {
+              script += `mkdir -p "${dir}"\n`;
+            }
+            script += `# Non-destructive backup if target file already exists\n`;
+            script += `if [ -f "${item.path}" ]; then\n  echo "⚠️ Backing up existing ${item.path} -> ${item.path}.bak"\n  cp "${item.path}" "${item.path}.bak"\nfi\n`;
+            script += `cat << 'EOF' > "${item.path}"\n${item.content}\nEOF\n\n`;
+          });
+
+          script += `echo "✅ Successfully installed all ${registry.length} Myrrh AI skills!"\n`;
+          downloadFile('setup-myrrh-ai-harness.sh', script);
+          showToast('Generated setup-myrrh-ai-harness.sh bundle!');
+        });
+      }
+
+      // Search filter listener
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          renderList(e.target.value);
+        });
+      }
+
+      // Initial render on boot with Graphite Dark
+      applyTheme(true);
+      renderList();
+      renderPreview();
+    })();
+  </script>
+</body>
+</html>
