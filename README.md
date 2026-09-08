@@ -1,12 +1,12 @@
 # **Myrrh AI — AdonisJS Agent Harness**
 
-> Teaching your AI agent to write clean, idiomatic AdonisJS v7. Token-optimized agent skills and guardrails designed for **Claude Code**, **Copilot**, **Opencode**, and autonomous AI coding assistants.
+> Teaching your AI agent to write clean, idiomatic AdonisJS v7. Token-optimized agent skills and guardrails designed for **OpenCode**, **Claude Code**, and autonomous AI coding assistants.
 
 ## **🧭 Live Web Workbench**
 
 An interactive visual builder and single-click bundle generator is available directly in this repository:
 
-👉 [**Open the Myrrh AI Interactive Harness Guide**](https://m4y0w4.github.io/myrrh-ai/)]
+👉 [**Open the Myrrh AI Interactive Harness Guide**](https://m4y0w4.github.io/myrrh-ai/)
 
 ## **🧠 Why This Architecture? (The Just-In-Time Context Strategy)**
 
@@ -22,26 +22,7 @@ Myrrh AI splits the AdonisJS v7 knowledge base into **modular, on-demand skill u
 
 ## **📂 Repository Structure**
 
-.  
-├── AGENTS.md                                \# Root invariant rules and dynamic import maps  
-├── .opencode/  
-│   └── skills/  
-│       ├── myrrh-lucid/  
-│       │   └── SKILL.md                     \# ORM, models, migrations & relations  
-│       ├── myrrh-vinejs/  
-│       │   └── SKILL.md                     \# Validation schemas & inferred DTOs  
-│       ├── myrrh-http/  
-│       │   └── SKILL.md                     \# Routing, generated barrel controllers & urlFor  
-│       ├── myrrh-transformers/  
-│       │   └── SKILL.md                     \# Model serialization & API response schemas  
-│       ├── myrrh-auth/  
-│       │   └── SKILL.md                     \# Access tokens, sessions & verifyCredentials  
-│       └── myrrh-bouncer/  
-│           └── SKILL.md                     \# Pre-validation authorization & policies  
-├── setup-myrrh-ai-harness.sh                \# Non-destructive install script  
-├── index.html                               \# Interactive builder (GitHub Pages ready)  
-├── README.md                                \# Project documentation  
-└── LICENSE                                  \# MIT License
+![Screenshot 2026-09-08 at 16.15.32.png](/Users/supes/Desktop/Screenshot%202026-09-08%20at%2016.15.32.png)
 
 ## **⚡ Quick Start**
 
@@ -119,5 +100,4 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE  
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER  
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  
